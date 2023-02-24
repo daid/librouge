@@ -1,8 +1,15 @@
 #include "r/frontend/renderer.h"
 
 namespace r::frontend {
-    
-void Renderer::drawBox(Rect2i rect, Color forground_color, Color background_color) {
+
+void Renderer::draw(Recti rect, char c, Color forground_color, Color background_color)
+{
+    for(auto p : rect) {
+        draw(p, c, forground_color, background_color);
+    }
+}
+
+void Renderer::drawBox(Recti rect, Color forground_color, Color background_color) {
     for(auto p : rect) {
         draw(p, ' ', forground_color, background_color);
     }

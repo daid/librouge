@@ -21,6 +21,7 @@ find_package(SDL2 REQUIRED)
 target_link_libraries(librouge PUBLIC glm::glm SDL2::SDL2)
 target_include_directories(librouge PUBLIC include)
 target_compile_options(librouge PUBLIC -Wall -Wextra)
+target_compile_features(librouge PUBLIC cxx_std_17)
 
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
     add_subdirectory(template)

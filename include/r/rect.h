@@ -114,8 +114,8 @@ public:
     tvec2<T> size;
 };
 
-typedef Rect<int> Rect2i;
-typedef Rect<float> Rect2f;
-typedef Rect<double> Rect2d;
+typedef Rect<int> Recti;
+typedef Rect<float> Rectf;
+typedef Rect<double> Rectd;
 
 }

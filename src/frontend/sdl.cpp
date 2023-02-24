@@ -84,6 +84,9 @@ void SDL::processEvents(GameState& gamestate) {
             case SDLK_F11: gamestate.onKey(KEY_F11); break;
             case SDLK_F12: gamestate.onKey(KEY_F12); break;
             case SDLK_LEFT: gamestate.onKey(KEY_LEFT); break;
+            case SDLK_RIGHT: gamestate.onKey(KEY_RIGHT); break;
+            case SDLK_UP: gamestate.onKey(KEY_UP); break;
+            case SDLK_DOWN: gamestate.onKey(KEY_DOWN); break;
 
             case SDLK_KP_ENTER: gamestate.onKey(KEY_RETURN); break;
             case SDLK_KP_1: gamestate.onKey(KEY_DOWN_LEFT); break;
