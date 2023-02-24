@@ -5,6 +5,7 @@
 #include "r/frontend/base.h"
 #include <memory>
 #include <vector>
+#include <chrono>
 
 
 namespace r {
@@ -22,12 +23,16 @@ public:
     }
     void popState();
 private:
-    static void update(Engine* engine);
+    static void staticUpdate(Engine* engine);
+    void update();
 
     Config config;
     std::unique_ptr<frontend::Frontend> frontend;
     std::vector<std::unique_ptr<GameState>> state_stack;
     std::vector<std::unique_ptr<GameState>> dead_states;
+
+    std::chrono::steady_clock::time_point last_update = std::chrono::steady_clock::now();
+    float fixed_update_accumulator = 0.0f;
 };
 
 }
