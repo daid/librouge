@@ -33,6 +33,16 @@ public:
         data.resize(_size.x * _size.y, fill);
     }
 
+    T& operator[](ivec2 position)
+    {
+        return data[position.x + position.y * _size.x];
+    }
+
+    const T& operator[](ivec2 position) const
+    {
+        return data[position.x + position.y * _size.x];
+    }
+
     T& operator()(ivec2 position)
     {
         return data[position.x + position.y * _size.x];
