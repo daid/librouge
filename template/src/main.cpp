@@ -1,21 +1,22 @@
 #include "r/engine.h"
 #include "r/keys.h"
+#include "r/actionqueue.h"
 #include <stdio.h>
 
-
+r::ActionQueue<int> queue;
 r::Engine engine({});
 
 class MainState : public r::GameState
 {
 public:
-    void onUpdate(float delta) { }
+    void onUpdate(float delta) override { (void)delta; }
 
     void onRender(r::frontend::Renderer& renderer) override {
         renderer.draw(r::Recti{{}, renderer.size()}, '.', {0.2, 0.2, 0.2}, {0.1,0.1,0.1});
         renderer.draw(position, '@', {1,1,1});
     }
     
-    void onKey(int key) {
+    void onKey(int key) override {
         switch(key) {
         case r::KEY_ESCAPE: engine.popState(); break;
         case r::KEY_LEFT: position.x -= 1; break;
@@ -30,6 +31,7 @@ public:
 
 int main(int argc, char** argv) {
     (void)argc; (void)argv;
+
     engine.pushState<MainState>();
     engine.run();
     return 0;

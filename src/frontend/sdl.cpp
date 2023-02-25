@@ -2,7 +2,9 @@
 #include "r/keys.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_main.h>
-
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 
 namespace r::frontend {
 

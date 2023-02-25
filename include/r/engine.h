@@ -23,7 +23,7 @@ public:
     }
     void popState();
 private:
-    static void staticUpdate(Engine* engine);
+    static void staticUpdate(void* engine);
     void update();
 
     Config config;

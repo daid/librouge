@@ -13,6 +13,8 @@ namespace r {
 */
 class GameState {
 public:
+    virtual ~GameState() {}
+
     // onUpdate is called every frame with the frame delta time, if this State is the topmost state
     virtual void onUpdate(float delta) { (void)delta; }
     // onFixedUpdate is called 60 times per second, if this State is the topmost state

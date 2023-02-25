@@ -1,5 +1,9 @@
 #include "r/engine.h"
 #include "r/frontend/sdl.h"
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 
 namespace r {
 
@@ -19,9 +23,9 @@ void Engine::run()
 #endif
 }
 
-void Engine::staticUpdate(Engine* engine)
+void Engine::staticUpdate(void* engine)
 {
-    engine->update();
+    static_cast<Engine*>(engine)->update();
 }
 
 void Engine::update()

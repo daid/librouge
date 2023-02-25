@@ -8,6 +8,8 @@ namespace r::frontend {
 
 class Renderer {
 public:
+    virtual ~Renderer() {}
+
     virtual ivec2 size() = 0;
     virtual void draw(ivec2 position, char c, Color forground_color) = 0;
     virtual void draw(ivec2 position, char c, Color forground_color, Color background_color) = 0;

@@ -1,4 +1,6 @@
 #include "r/line.h"
+#include <algorithm>
+
 
 namespace r {
 
