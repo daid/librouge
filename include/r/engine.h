@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include <chrono>
+#include <string>
 
 
 namespace r {
@@ -14,6 +15,7 @@ class Engine {
 public:
     struct Config {
         ivec2 minimal_screen_size{80,25};
+        std::string title = "librouge";
     };
 
     Engine(const Config& config);

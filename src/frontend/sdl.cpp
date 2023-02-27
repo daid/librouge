@@ -45,6 +45,7 @@ SDL::SDL(const Engine::Config& config) {
 #endif//__EMSCRIPTEN__
 
     SDL_CreateWindowAndRenderer(display_mode.w, display_mode.h, SDL_WINDOW_RESIZABLE, &window, &renderer);
+    SDL_SetWindowTitle(window, config.title.c_str());
     SDL_RenderSetVSync(renderer, 1);
     extern unsigned char sdl_font_bmp[];
     extern unsigned int sdl_font_bmp_len;

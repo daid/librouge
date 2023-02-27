@@ -20,10 +20,10 @@ public:
     // onFixedUpdate is called 60 times per second, if this State is the topmost state
     virtual void onFixedUpdate() {}
     // onRender is called every frame to render this state to the screen.
-    virtual void onRender(frontend::Renderer& renderer) = 0;
+    virtual void onRender(frontend::Renderer& renderer) { (void)renderer; }
     // onKey is called every time the player pressed a key on the keyboard, if this State is the topmost state
     // For ascii based keys, the value is the ascii value. 
-    virtual void onKey(int key) = 0;
+    virtual void onKey(int key) { (void)key; }
 };
 
 }
