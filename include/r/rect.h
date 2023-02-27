@@ -27,50 +27,62 @@ public:
             position.y + size.y >= other.position.y && other.position.y + other.size.y >= position.y;
     }
 
-    void growToInclude(tvec2<T> p)
+    Rect<T> growToInclude(tvec2<T> p) const
     {
-        if (p.x < position.x)
+        auto result = *this;
+        if (p.x < result.position.x)
         {
-            size.x = size.x - p.x + position.x;
-            position.x = p.x;
+            result.size.x = result.size.x - p.x + result.position.x;
+            result.position.x = p.x;
         }
-        if (p.y < position.y)
+        if (p.y < result.position.y)
         {
-            size.y = size.y - p.y + position.y;
-            position.y = p.y;
+            result.size.y = result.size.y - p.y + result.position.y;
+            result.position.y = p.y;
         }
-        if (p.x > position.x + size.x)
-            size.x = p.x - position.x;
-        if (p.y > position.y + size.y)
-            size.y = p.y - position.y;
+        if (p.x > result.position.x + size.x)
+            size.x = p.x - result.position.x;
+        if (p.y > result.position.y + size.y)
+            result.size.y = p.y - result.position.y;
+        return result;
     }
 
-    void shrinkToFitWithin(const Rect<T>& other)
+    Rect<T> shrink(tvec2<T> p) const
     {
-        if (position.x < other.position.x)
+        auto result = Rect<T>(position + p, size - p * 2);
+        if (result.size.x < 0) result.size.x = 0;
+        if (result.size.y < 0) result.size.y = 0;
+        return result;
+    }
+
+    Rect<T> shrinkToFitWithin(const Rect<T>& other) const
+    {
+        auto result = *this;
+        if (result.position.x < other.position.x)
         {
-            size.x -= other.position.x - position.x;
-            position.x = other.position.x;
+            result.size.x -= other.position.x - result.position.x;
+            result.position.x = other.position.x;
         }
-        if (position.y < other.position.y)
+        if (result.position.y < other.position.y)
         {
-            size.y -= other.position.y - position.y;
-            position.y = other.position.y;
+            result.size.y -= other.position.y - result.position.y;
+            result.position.y = other.position.y;
         }
-        if (position.x + size.x > other.position.x + other.size.x)
-            size.x -= (position.x + size.x) - (other.position.x + other.size.x);
-        if (position.y + size.y > other.position.y + other.size.y)
-            size.y -= (position.y + size.y) - (other.position.y + other.size.y);
-        if (size.x < 0)
+        if (result.position.x + result.size.x > other.position.x + other.size.x)
+            result.size.x -= (position.x + size.x) - (other.position.x + other.size.x);
+        if (result.position.y + result.size.y > other.position.y + other.size.y)
+            result.size.y -= (result.position.y + result.size.y) - (other.position.y + other.size.y);
+        if (result.size.x < 0)
         {
-            position.x += size.x;
-            size.x = 0;
+            result.position.x += result.size.x;
+            result.size.x = 0;
         }
-        if (size.y < 0)
+        if (result.size.y < 0)
         {
-            position.y += size.y;
-            size.y = 0;
+            result.position.y += result.size.y;
+            result.size.y = 0;
         }
+        return result;
     }
 
     class Iterator {
