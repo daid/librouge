@@ -72,14 +72,12 @@ int main(int argc, char** argv) {
     }
     for(int x=0;x<centers.size().x-1;x++) {
         for(int y=0;y<centers.size().y-1;y++) {
-            r::traceLine(centers[{x, y}], centers[{x + 1, y}], [](auto p) {
+            for(auto p : r::TraceLine(centers[{x, y}], centers[{x + 1, y}])) {
                 map[p].type = Tile::Type::Floor;
-                return true;
-            });
-            r::traceLine(centers[{x, y}], centers[{x, y + 1}], [](auto p) {
+            }
+            for(auto p : r::TraceLine(centers[{x, y}], centers[{x, y + 1}])) {
                 map[p].type = Tile::Type::Floor;
-                return true;
-            });
+            }
         }
     }
 
