@@ -4,17 +4,26 @@
 
 namespace r {
 
-void traceLine(ivec2 start, ivec2 end, std::function<bool(ivec2)> callback)
-{
-    vec2 s{start.x+0.5f, start.y+0.5f};
-    vec2 e{end.x+0.5f, end.y+0.5f};
-    vec2 d{e - s};
-    auto n = std::max(std::abs(start.x - end.x), std::abs(start.y - end.y));
-    for(int step = 0; step < n; step++) {
-        if (!callback(floor(s + d * float(step) / float(n))))
-            return;
-    }
-    callback(end);
+TraceLine::TraceLine(ivec2 start, ivec2 end)
+: start_point(start), end_point(end) {
+}
+
+TraceLine::Iterator::Iterator(ivec2 start, ivec2 end, int index)
+: start_point(start), end_point(end), index(index) {
+}
+
+bool TraceLine::Iterator::operator!=(const Iterator& other) const { return index != other.index; }
+void TraceLine::Iterator::operator++() { index++; }
+ivec2 TraceLine::Iterator::operator*() const {
+    auto n = std::max(std::abs(start_point.x - end_point.x), std::abs(start_point.y - end_point.y));
+    return floor(vec2{start_point.x + 0.5f, end_point.y + 0.5f} + vec2{end_point.x - start_point.x, end_point.y - start_point.y} * float(index) / float(n));
+}
+
+TraceLine::Iterator TraceLine::begin() {
+    return Iterator(start_point, end_point, 0);
+}
+TraceLine::Iterator TraceLine::end() {
+    return Iterator(start_point, end_point, std::max(std::abs(start_point.x - end_point.x), std::abs(start_point.y - end_point.y)) + 1);
 }
 
 }
