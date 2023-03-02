@@ -9,6 +9,7 @@ namespace r::frontend {
 class Terminal : public Frontend {
 public:
     Terminal(const Engine::Config& config);
+    ~Terminal();
 
     void processEvents(GameState& gamestate) override;
     void present() override;

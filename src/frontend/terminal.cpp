@@ -9,7 +9,13 @@
 #  define DISABLE_NEWLINE_AUTO_RETURN        0x0008
 # endif
 #else
+# include <sys/ioctl.h>
+# include <termios.h>
+# include <unistd.h>
 # include <poll.h>
+# include <queue>
+
+struct termios term_orig;
 #endif
 
 
@@ -51,6 +57,15 @@ Terminal::Terminal(const Engine::Config& config) {
     
     //Switch to alternative buffer and clear it, disable the cursor, enable mouse
     printf(CSI "?1049h" CSI "?25l" CSI "?1000;1015h");
+    fflush(stdout);
+}
+
+Terminal::~Terminal()
+{
+#ifndef _WIN32
+    tcsetattr(STDIN_FILENO, TCSANOW, &term_orig);
+#endif
+    printf(CSI "?1049l" CSI "?25h" CSI "0m" CSI "?1000;10015l");
     fflush(stdout);
 }
 
@@ -122,7 +137,7 @@ void Terminal::processEvents(GameState& gamestate) {
     }
 #else
     struct pollfd p { 0, POLLIN, 0 };
-    poll(&p, 1, 0);
+    poll(&p, 1, 16);
     if (!(p.revents & POLLIN))
         return;
 
@@ -131,7 +146,12 @@ void Terminal::processEvents(GameState& gamestate) {
     auto count = read(STDIN_FILENO, buffer, sizeof(buffer));
     for(int n=0; n<count; n++)
         input_queue.push_back(buffer[n]);
-    
+    auto inputNext = [&]() -> char {
+        if (input_queue.empty()) return 0;
+        char result = input_queue.front();
+        input_queue.pop_front();
+        return result;
+    };
     auto inputExpect = [&](char c) {
         if (input_queue.empty()) return false;
         if (input_queue.front() != c) return false;
@@ -192,10 +212,14 @@ void Terminal::processEvents(GameState& gamestate) {
                 if (param0 >= 0x20) {
                     auto mouse_pos = ivec2{param1 - 1, param2 - 1};
                     auto mouse_button = param0;
+                    (void)mouse_button;
+                    (void)mouse_pos;
                     continue;
                 }
                 int button = inputNext() - 0x20;
                 auto mouse_pos = ivec2{((unsigned char)inputNext()) - 0x21, ((unsigned char)inputNext()) - 0x21};
+                (void)button;
+                (void)mouse_pos;
                 continue;
             }
             //result, param0

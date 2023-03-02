@@ -48,7 +48,9 @@ SDL::SDL(const Engine::Config& config) {
         return;
     }
     SDL_SetWindowTitle(window, config.title.c_str());
+#if SDL_MAJOR_VERSION > 2 || SDL_MINOR_VERSION > 0 || SDL_PATCHLEVEL >= 18
     SDL_RenderSetVSync(renderer, 1);
+#endif
     extern unsigned char sdl_font_bmp[];
     extern unsigned int sdl_font_bmp_len;
     auto font_surface = SDL_LoadBMP_RW(SDL_RWFromConstMem(sdl_font_bmp, sdl_font_bmp_len), 1);
