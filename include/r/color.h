@@ -86,6 +86,9 @@ public:
     Color& operator*=(float f) { r = std::clamp(r * f, 0.0f, 1.0f); g = std::clamp(g * f, 0.0f, 1.0f); b = std::clamp(b * f, 0.0f, 1.0f); return *this; }
 
     Color max(const Color& other) const { return Color(std::max(r, other.r), std::max(g, other.g), std::max(b, other.b)); }
+
+    bool operator==(const Color& other) { return r == other.r && b == other.b && g == other.g; }
+    bool operator!=(const Color& other) { return r != other.r || b != other.b || g != other.g; }
 };
 
 }

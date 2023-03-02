@@ -1,5 +1,6 @@
 #include "r/engine.h"
 #include "r/frontend/sdl.h"
+#include "r/frontend/terminal.h"
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -13,6 +14,8 @@ Engine::Engine(const Config& config_) : config(config_) {
 void Engine::run()
 {
     frontend = std::make_unique<frontend::SDL>(config);
+    if (!frontend->isOpen())
+        frontend = std::make_unique<frontend::Terminal>(config);
 
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_arg(Engine::staticUpdate, this, 0, 1);

@@ -8,12 +8,6 @@
 
 namespace r::frontend {
 
-static SDL_Window *window;
-static SDL_Renderer *renderer;
-static SDL_Texture *font_texture;
-static ivec2 glyph_size{8, 8};
-static bool quit = false;
-
 
 SDL::SDL(const Engine::Config& config) {
 #ifdef _WIN32
@@ -26,7 +20,11 @@ SDL::SDL(const Engine::Config& config) {
 
     minimal_size = config.minimal_screen_size;
 
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
+        printf("Failed to initalize SDL2: %s\n", SDL_GetError());
+        quit = true;
+        return;
+    }
     //TODO: Full screen
 
     SDL_Rect display_mode;
@@ -44,7 +42,11 @@ SDL::SDL(const Engine::Config& config) {
     }
 #endif//__EMSCRIPTEN__
 
-    SDL_CreateWindowAndRenderer(display_mode.w, display_mode.h, SDL_WINDOW_RESIZABLE, &window, &renderer);
+    if (SDL_CreateWindowAndRenderer(display_mode.w, display_mode.h, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
+        printf("Failed to create SDL2 window or renderer: %s\n", SDL_GetError());
+        quit = true;
+        return;
+    }
     SDL_SetWindowTitle(window, config.title.c_str());
     SDL_RenderSetVSync(renderer, 1);
     extern unsigned char sdl_font_bmp[];
