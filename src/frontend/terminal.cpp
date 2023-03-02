@@ -205,29 +205,40 @@ void Terminal::processEvents(GameState& gamestate) {
                 param2 = inputNumber();
             }
             result = inputNext();
-            if (result == '~') {
-                continue;
-            }
-            if (result == 'M') { // Mouse tracking
-                if (param0 >= 0x20) {
-                    auto mouse_pos = ivec2{param1 - 1, param2 - 1};
-                    auto mouse_button = param0;
-                    (void)mouse_button;
-                    (void)mouse_pos;
-                    continue;
+            switch(result) {
+            case '~':
+                switch(param0) {
+                case 1: gamestate.onKey(KEY_UP_LEFT); break;
+                case 4: gamestate.onKey(KEY_DOWN_LEFT); break;
+                case 5: gamestate.onKey(KEY_UP_RIGHT); break;
+                case 6: gamestate.onKey(KEY_DOWN_RIGHT); break;
                 }
-                int button = inputNext() - 0x20;
-                auto mouse_pos = ivec2{((unsigned char)inputNext()) - 0x21, ((unsigned char)inputNext()) - 0x21};
-                (void)button;
-                (void)mouse_pos;
-                continue;
+                break;
+            case 'M':
+                if (param1 > -1) { // Mouse tracking
+                    if (param0 >= 0x20) {
+                        auto mouse_pos = ivec2{param1 - 1, param2 - 1};
+                        auto mouse_button = param0;
+                        (void)mouse_button;
+                        (void)mouse_pos;
+                    } else {
+                        int mouse_button = inputNext() - 0x20;
+                        auto mouse_pos = ivec2{((unsigned char)inputNext()) - 0x21, ((unsigned char)inputNext()) - 0x21};
+                        (void)mouse_button;
+                        (void)mouse_pos;
+                    }
+                }
+                break;
+            case 'A': gamestate.onKey(KEY_UP); break;
+            case 'B': gamestate.onKey(KEY_DOWN); break;
+            case 'C': gamestate.onKey(KEY_RIGHT); break;
+            case 'D': gamestate.onKey(KEY_LEFT); break;
             }
-            //result, param0
-            continue;
+        } else {
+            //ALT+key
+            result = input_queue.front();
+            input_queue.pop_front();
         }
-        //ALT+key
-        result = input_queue.front();
-        input_queue.pop_front();
     }
 #endif
 }
