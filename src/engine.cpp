@@ -1,6 +1,7 @@
 #include "r/engine.h"
 #include "r/frontend/sdl.h"
 #include "r/frontend/terminal.h"
+#include <string.h>
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -13,7 +14,12 @@ Engine::Engine(const Config& config_) : config(config_) {
 
 void Engine::run()
 {
-    frontend = std::make_unique<frontend::SDL>(config);
+    if (auto t = getenv("ROUGE_FRONTEND")) {
+        if (strcmp(t, "SDL") == 0) frontend = std::make_unique<frontend::SDL>(config);
+        if (strcmp(t, "term") == 0) frontend = std::make_unique<frontend::Terminal>(config);
+    }
+    if (!frontend)
+        frontend = std::make_unique<frontend::SDL>(config);
     if (!frontend->isOpen())
         frontend = std::make_unique<frontend::Terminal>(config);
 

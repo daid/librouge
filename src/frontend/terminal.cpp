@@ -56,7 +56,7 @@ Terminal::Terminal(const Engine::Config& config) {
 #endif
     
     //Switch to alternative buffer and clear it, disable the cursor, enable mouse
-    printf(CSI "?1049h" CSI "?25l" CSI "?1000;1015h");
+    printf(CSI "?1049h" CSI "?25l" CSI "?1000;1002;1003h");
     fflush(stdout);
 }
 
@@ -65,7 +65,7 @@ Terminal::~Terminal()
 #ifndef _WIN32
     tcsetattr(STDIN_FILENO, TCSANOW, &term_orig);
 #endif
-    printf(CSI "?1049l" CSI "?25h" CSI "0m" CSI "?1000;10015l");
+    printf(CSI "?1049l" CSI "?25h" CSI "0m" CSI "?1000;1002;1003l");
     fflush(stdout);
 }
 
@@ -204,6 +204,8 @@ void Terminal::processEvents(GameState& gamestate) {
             if (inputExpect(';')) {
                 param2 = inputNumber();
             }
+            (void)param1;
+            (void)param2;
             result = inputNext();
             switch(result) {
             case '~':
@@ -215,17 +217,19 @@ void Terminal::processEvents(GameState& gamestate) {
                 }
                 break;
             case 'M':
-                if (param1 > -1) { // Mouse tracking
-                    if (param0 >= 0x20) {
-                        auto mouse_pos = ivec2{param1 - 1, param2 - 1};
-                        auto mouse_button = param0;
-                        (void)mouse_button;
-                        (void)mouse_pos;
+                {
+                    int flags = inputNext() - 0x20;
+                    int x = (inputNext() & 0xFF) - 0x21;
+                    int y = (inputNext() & 0xFF) - 0x21;
+                    int button = flags & 3; //0=MB1, 1=MB2, 2=MB3, 3=Release
+                    if (flags & 0x40) {
+                        gamestate.onMouseWheel({x, y}, button);
+                    } else if (flags & 0x20) {
+                        gamestate.onMouseMove({x, y}, button);
+                    } else if (button == 3) {
+                        gamestate.onMouseUp({x, y}, 0);
                     } else {
-                        int mouse_button = inputNext() - 0x20;
-                        auto mouse_pos = ivec2{((unsigned char)inputNext()) - 0x21, ((unsigned char)inputNext()) - 0x21};
-                        (void)mouse_button;
-                        (void)mouse_pos;
+                        gamestate.onMouseDown({x, y}, button);
                     }
                 }
                 break;

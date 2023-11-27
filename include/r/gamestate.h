@@ -24,6 +24,11 @@ public:
     // onKey is called every time the player pressed a key on the keyboard, if this State is the topmost state
     // For ascii based keys, the value is the ascii value. 
     virtual void onKey(int key) { (void)key; }
+
+    virtual void onMouseDown(ivec2 pos, int button) { (void)pos; (void)button; }
+    virtual void onMouseMove(ivec2 pos, int button) { (void)pos; (void)button; }
+    virtual void onMouseUp(ivec2 pos, int button) { (void)pos; (void)button; }
+    virtual void onMouseWheel(ivec2 pos, int amount) { (void)pos; (void)amount; }
 };
 
 }
