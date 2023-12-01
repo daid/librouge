@@ -5,6 +5,10 @@
 #include "r/random.h"
 #include "r/line.h"
 #include "r/fov.h"
+#include "r/ui/root.h"
+#include "r/ui/panel.h"
+#include "r/ui/label.h"
+#include "r/ui/vertical.h"
 #include <stdio.h>
 
 r::ActionQueue<int> queue;
@@ -24,6 +28,14 @@ r::Vector2<Tile> map;
 class MainState : public r::GameState
 {
 public:
+    MainState() {
+        ui.layoutManager<r::ui::Vertical>();
+        auto p = ui.add<r::ui::Panel>(r::ui::min_size(10,3)|r::ui::max_size(20, 10)|r::ui::bottom(), r::Color{0,0,0});
+        p->add<r::ui::Label>(r::ui::size(6, 1)|r::ui::center(), "Test");
+        p = ui.add<r::ui::Panel>(r::ui::min_size(10,3)|r::ui::max_size(20, 10)|r::ui::bottom(), r::Color{0,.1,0});
+        p->add<r::ui::Label>(r::ui::size(6, 1)|r::ui::center(), "Test");
+    }
+
     void onUpdate(float delta) override { (void)delta; }
 
     void onRender(r::frontend::Renderer& renderer) override {
@@ -38,6 +50,8 @@ public:
             return map[p].type != Tile::Type::Wall;
         });
         renderer.draw(position + camera_offset, '@', {1,1,1});
+
+        ui.render(renderer);
     }
     
     void onKey(int key) override {
@@ -50,6 +64,7 @@ public:
         }
     }
 
+    r::ui::Root ui;
     r::ivec2 position{4,4};
 };
 
