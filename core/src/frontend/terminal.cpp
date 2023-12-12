@@ -16,9 +16,9 @@ void Terminal::present() {
         cursor_pos = {-1, -1};
     }
 
-    printf(CSI "?25l"); //WSL sometimes enables the cursor again, stupid WSL, so disable it every refresh
     Color cur_fg = {-1, -1, -1};
     Color cur_bg = {-1, -1, -1};
+    cur_fg.r = cur_bg.r = -1;
     for(int y=0; y<tiles.size().y; y++) {
         for(int x=0; x<tiles.size().x; x++) {
             auto pos = glm::ivec2{x, y};
@@ -42,9 +42,12 @@ void Terminal::present() {
             }
         }
     }
-    cursor_pos = {0, 0};
-    printf(CSI "1;1H");//Put the cursor in the top left corner
-    fflush(stdout);
+    if (cursor_pos != ivec2{0, 0}) {
+        cursor_pos = {0, 0};
+        printf(CSI "1;1H"); //Put the cursor in the top left corner
+        printf(CSI "?25l"); //WSL sometimes enables the cursor again, stupid WSL, so disable it every refresh
+        fflush(stdout);
+    }
 }
 
 bool Terminal::isOpen() {
