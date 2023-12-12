@@ -10,6 +10,7 @@ class Label : public Element {
 public:
     Label(const LayoutSettings& ls, const std::string& text);
 
+    void setText(const std::string& text);
 private:
     void draw(r::frontend::Renderer& r) override;
 

@@ -23,6 +23,8 @@ public:
     void draw(ivec2 position, char c, Color forground_color, Color background_color) override;
 
 private:
+    ivec2 mousePositionToTilePosition(int x, int y);
+
     ivec2 minimal_size{1, 1};
     struct Tile {
         char c{0};

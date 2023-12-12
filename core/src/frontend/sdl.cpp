@@ -108,6 +108,17 @@ void SDL::processEvents(GameState& gamestate) {
                 break;
             }
             break;
+        case SDL_MOUSEBUTTONDOWN:
+            gamestate.onMouseDown(mousePositionToTilePosition(event.button.x, event.button.y), event.button.button);
+            break;
+        case SDL_MOUSEBUTTONUP:
+            gamestate.onMouseUp(mousePositionToTilePosition(event.button.x, event.button.y), event.button.button);
+            break;
+        case SDL_MOUSEMOTION:
+            for(int n=0; n<5; n++)
+                if (event.motion.state & (1 << n))
+                    gamestate.onMouseMove(mousePositionToTilePosition(event.motion.x, event.motion.y), n);
+            break;
         }
     }
 }
@@ -166,6 +177,19 @@ void SDL::draw(ivec2 position, char c, Color forground_color, Color background_c
     e.c = c;
     e.forground_color = forground_color;
     e.background_color = background_color;
+}
+
+ivec2 SDL::mousePositionToTilePosition(int x, int y)
+{
+    int w, h;
+    SDL_GetWindowSize(window, &w, &h);
+    int scale = std::min(w / minimal_size.x, h / minimal_size.y);
+    int tw = (w + scale - 1) / scale;
+    int th = (h + scale - 1) / scale;
+    int xoffset = (w - tw * scale) / 2;
+    int yoffset = (h - th * scale) / 2;
+
+    return {std::floor((x - xoffset) / scale), std::floor((y - yoffset) / scale)};
 }
 
 }
