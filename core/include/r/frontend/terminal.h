@@ -20,6 +20,8 @@ public:
     void draw(ivec2 position, char c, Color forground_color, Color background_color) override;
 
 private:
+    ivec2 updateSize();
+
     struct Tile {
         char c{0};
         Color forground_color;
