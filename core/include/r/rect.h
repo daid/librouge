@@ -8,8 +8,8 @@ template<typename T> class Rect
 {
 public:
     Rect() {}
-    Rect(tvec2<T> _position, tvec2<T> _size) : position(_position), size(_size) {}
-    Rect(T x, T y, T w, T h) : position(x, y), size(w, h) {}
+    Rect(tvec2<T> _position, tvec2<T> _size) : position{_position}, size{_size} {}
+    Rect(T x, T y, T w, T h) : position{x, y}, size{w, h} {}
 
     tvec2<T> center() const
     {

@@ -18,7 +18,7 @@ static inline constexpr Direction operator-(Direction d, int n) {
     return static_cast<Direction>((static_cast<int>(d) - n) & 3);
 }
 
-static inline glm::ivec2 offset(Direction dir) {
+static inline ivec2 offset(Direction dir) {
     switch(dir) {
     case Direction::Up: return {0, -1};
     case Direction::Down: return {0, 1};
@@ -28,7 +28,7 @@ static inline glm::ivec2 offset(Direction dir) {
     return {0, 0};
 }
 
-static inline Direction toDirection(glm::ivec2 offset) {
+static inline Direction toDirection(ivec2 offset) {
     if (std::abs(offset.x) >= std::abs(offset.y)) {
         if (offset.x > 0) return Direction::Right;
         return Direction::Left;
@@ -69,7 +69,7 @@ static inline constexpr Direction8 operator-(Direction8 d, int n) {
     return static_cast<Direction8>((static_cast<int>(d) - n) & 7);
 }
 
-static inline glm::ivec2 offset(Direction8 dir) {
+static inline ivec2 offset(Direction8 dir) {
     switch(dir) {
     case Direction8::Up: return {0, -1};
     case Direction8::UpRight: return {1, -1};

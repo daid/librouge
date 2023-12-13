@@ -10,7 +10,7 @@ namespace r {
 class VisitFOV
 {
 public:
-    VisitFOV(ivec2 _center, int _radius, const std::function<bool(glm::ivec2)>& _callback)
+    VisitFOV(ivec2 _center, int _radius, const std::function<bool(ivec2)>& _callback)
     : center(_center), radius(_radius), callback(_callback)
     {
         if (!callback(center))

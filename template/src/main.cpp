@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
     (void)argc; (void)argv;
 
     map.resize({40, 30});
-    r::Vector2<r::vec2> centers;
+    r::Vector2<r::ivec2> centers;
     centers.resize(map.size() / 10);
     for(int x=0;x<map.size().x; x+=10) {
         for(int y=0;y<map.size().y; y+=10) {

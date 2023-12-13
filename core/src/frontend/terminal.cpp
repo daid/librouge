@@ -21,7 +21,7 @@ void Terminal::present() {
     cur_fg.r = cur_bg.r = -1;
     for(int y=0; y<tiles.size().y; y++) {
         for(int x=0; x<tiles.size().x; x++) {
-            auto pos = glm::ivec2{x, y};
+            auto pos = ivec2{x, y};
             auto& tile = tiles[pos];
             if (tile.c != tile.previous_c || tile.forground_color != tile.previous_forground_color || tile.background_color != tile.previous_background_color) {
                 tile.previous_c = tile.c;

@@ -15,8 +15,8 @@ void Root::render(r::frontend::Renderer& r) {
 void Root::layoutRecursive(Element* e)
 {
     auto r = e->rendering_rect;
-    r.position += ivec2(e->layout.padding.left, e->layout.padding.top);
-    r.size -= ivec2(e->layout.padding.left + e->layout.padding.right, e->layout.padding.top + e->layout.padding.bottom);
+    r.position += ivec2{e->layout.padding.left, e->layout.padding.top};
+    r.size -= ivec2{e->layout.padding.left + e->layout.padding.right, e->layout.padding.top + e->layout.padding.bottom};
     if (e->layout_manager) {
         e->layout_manager->update(e->children, r);
     } else {

@@ -189,7 +189,7 @@ ivec2 SDL::mousePositionToTilePosition(int x, int y)
     int xoffset = (w - tw * scale) / 2;
     int yoffset = (h - th * scale) / 2;
 
-    return {std::floor((x - xoffset) / scale), std::floor((y - yoffset) / scale)};
+    return {int(std::floor((x - xoffset) / scale)), int(std::floor((y - yoffset) / scale))};
 }
 
 }
