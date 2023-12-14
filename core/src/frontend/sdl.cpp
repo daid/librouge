@@ -25,6 +25,12 @@ SDL::SDL(const Engine::Config& config) {
         quit = true;
         return;
     }
+    if (strcmp(SDL_GetCurrentVideoDriver(), "offscreen") == 0) {
+        SDL_Quit();
+        quit = true;
+        return;
+    }
+    printf("SDL: Video driver: %s\n", SDL_GetCurrentVideoDriver());
     //TODO: Full screen
 
     SDL_Rect display_mode;
@@ -34,6 +40,7 @@ SDL::SDL(const Engine::Config& config) {
 #else
     if (SDL_GetDisplayUsableBounds(0, &display_mode))
     {
+        printf("SDL: Failed to get display bounds...\n");
         display_mode.w = 640;
         display_mode.h = 480;
     } else {
@@ -44,6 +51,7 @@ SDL::SDL(const Engine::Config& config) {
 
     if (SDL_CreateWindowAndRenderer(display_mode.w, display_mode.h, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
         printf("Failed to create SDL2 window or renderer: %s\n", SDL_GetError());
+        SDL_Quit();
         quit = true;
         return;
     }
