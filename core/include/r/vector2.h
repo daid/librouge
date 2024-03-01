@@ -68,6 +68,16 @@ public:
     const_iterator begin() const { return data.begin(); }
     const_iterator end() const { return data.end(); }
 
+    bool operator==(const Vector2<T>& other) {
+        if (_size != other.size) return false;
+        return data == other.data;
+    }
+
+    bool operator!=(const Vector2<T>& other) {
+        if (_size != other.size) return true;
+        return data != other.data;
+    }
+
 private:
     ivec2 _size{0, 0};
     std::vector<T> data;
