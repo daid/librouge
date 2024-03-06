@@ -27,10 +27,10 @@ void Renderer::drawBox(Recti rect, Color forground_color, Color background_color
     draw({rect.position.x + rect.size.x - 1, rect.position.y + rect.size.y - 1}, '+', forground_color, background_color);
 }
 
-void Renderer::print(ivec2 position, const char* fmt, ...)
+void Renderer::print(ivec2 position, Color color, const char* fmt, ...)
 {
     for(char c = *fmt; *fmt; c = *++fmt) {
-        draw(position, c, {1, 1, 1});
+        draw(position, c, color);
         position.x += 1;
     }
 }

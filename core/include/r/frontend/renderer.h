@@ -16,7 +16,7 @@ public:
 
     void draw(Recti rect, char c, Color forground_color, Color background_color);
     void drawBox(Recti rect, Color forground_color, Color background_color);
-    void print(ivec2 position, const char* fmt, ...);
+    void print(ivec2 position, Color color, const char* fmt, ...);
 };
 
 }

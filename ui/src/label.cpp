@@ -13,7 +13,7 @@ void Label::setText(const std::string& text_) {
 }
 
 void Label::draw(r::frontend::Renderer& r) {
-    r.print(rect().position, text.c_str());
+    r.print(rect().position, {1, 1, 1}, text.c_str());
 }
 
 }
