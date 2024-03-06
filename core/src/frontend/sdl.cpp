@@ -187,6 +187,14 @@ void SDL::draw(ivec2 position, char c, Color forground_color, Color background_c
     e.background_color = background_color;
 }
 
+void SDL::draw(ivec2 position, Color background_color) {
+    if (position.x < 0 || position.y < 0) return;
+    if (position.x >= tiles.size().x || position.y >= tiles.size().y) return;
+
+    auto& e = tiles(position);
+    e.background_color = background_color;
+}
+
 ivec2 SDL::mousePositionToTilePosition(int x, int y)
 {
     int w, h;

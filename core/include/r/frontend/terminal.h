@@ -18,6 +18,7 @@ public:
     ivec2 size() override;
     void draw(ivec2 position, char c, Color forground_color) override;
     void draw(ivec2 position, char c, Color forground_color, Color background_color) override;
+    void draw(ivec2 position, Color background_color) override;
 
 private:
     ivec2 updateSize();

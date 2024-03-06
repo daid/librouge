@@ -13,6 +13,7 @@ public:
     virtual ivec2 size() = 0;
     virtual void draw(ivec2 position, char c, Color forground_color) = 0;
     virtual void draw(ivec2 position, char c, Color forground_color, Color background_color) = 0;
+    virtual void draw(ivec2 position, Color background_color) = 0;
 
     void draw(Recti rect, char c, Color forground_color, Color background_color);
     void drawBox(Recti rect, Color forground_color, Color background_color);

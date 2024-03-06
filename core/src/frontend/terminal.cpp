@@ -77,4 +77,12 @@ void Terminal::draw(ivec2 position, char c, Color forground_color, Color backgro
     e.background_color = background_color;
 }
 
+void Terminal::draw(ivec2 position, Color background_color) {
+    if (position.x < 0 || position.y < 0) return;
+    if (position.x >= tiles.size().x || position.y >= tiles.size().y) return;
+
+    auto& e = tiles(position);
+    e.background_color = background_color;
+}
+
 }
