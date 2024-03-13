@@ -16,6 +16,7 @@ public:
     struct Config {
         ivec2 minimal_screen_size{80,25};
         std::string title = "librouge";
+        bool continuous_loop{true};
     };
 
     Engine(const Config& config);

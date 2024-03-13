@@ -11,7 +11,7 @@ public:
     Terminal(const Engine::Config& config);
     ~Terminal();
 
-    void processEvents(GameState& gamestate) override;
+    void processEvents(GameState& gamestate, bool blocking) override;
     void present() override;
     bool isOpen() override;
 

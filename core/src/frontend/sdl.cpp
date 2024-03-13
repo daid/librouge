@@ -69,9 +69,10 @@ SDL::SDL(const Engine::Config& config) {
     SDL_FreeSurface(font_surface);
 }
 
-void SDL::processEvents(GameState& gamestate) {
+void SDL::processEvents(GameState& gamestate, bool blocking) {
     SDL_Event event;
-    while(SDL_PollEvent(&event)) {
+    while(blocking ? SDL_WaitEvent(&event) : SDL_PollEvent(&event)) {
+        blocking = false;
         switch(event.type) {
         case SDL_QUIT: quit = true; break;
         case SDL_TEXTINPUT:

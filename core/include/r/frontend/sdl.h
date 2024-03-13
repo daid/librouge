@@ -14,7 +14,7 @@ class SDL : public Frontend {
 public:
     SDL(const Engine::Config& config);
 
-    void processEvents(GameState& gamestate) override;
+    void processEvents(GameState& gamestate, bool blocking) override;
     void present() override;
     bool isOpen() override;
 

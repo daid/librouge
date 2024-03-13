@@ -40,14 +40,17 @@ Terminal::~Terminal()
     fflush(stdout);
 }
 
-void Terminal::processEvents(GameState& gamestate) {
+void Terminal::processEvents(GameState& gamestate, bool blocking) {
     while(1) {
         INPUT_RECORD input_record;
         DWORD count = 0;
-        GetNumberOfConsoleInputEvents(GetStdHandle(STD_INPUT_HANDLE), &count);
-        if (count == 0)
-            break;
+        if (!blocking) {
+            GetNumberOfConsoleInputEvents(GetStdHandle(STD_INPUT_HANDLE), &count);
+            if (count == 0)
+                break;
+        }
         ReadConsoleInput(GetStdHandle(STD_INPUT_HANDLE), &input_record, 1, &count);
+        blocking = false;
         switch(input_record.EventType)
         {
         case KEY_EVENT:

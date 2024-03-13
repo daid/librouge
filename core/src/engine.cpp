@@ -24,6 +24,7 @@ void Engine::run()
         frontend = std::make_unique<frontend::Terminal>(config);
 
 #ifdef __EMSCRIPTEN__
+    config.continuous_loop = true;
     emscripten_set_main_loop_arg(Engine::staticUpdate, this, 0, 1);
 #else
     while(frontend->isOpen() && !state_stack.empty()) {
@@ -45,20 +46,22 @@ void Engine::update()
     time_delta = std::min(time_delta, 0.5f);
     
     //Run updates on top most state.
-    fixed_update_accumulator += time_delta;
-    static constexpr auto fixed_update_delta = 1.0f / 60.0f;
-    while(fixed_update_accumulator > fixed_update_delta)
-    {
-        fixed_update_accumulator -= fixed_update_delta;
-        if (!state_stack.empty())
-           state_stack.back()->onFixedUpdate();
+    if (config.continuous_loop) {
+        fixed_update_accumulator += time_delta;
+        static constexpr auto fixed_update_delta = 1.0f / 60.0f;
+        while(fixed_update_accumulator > fixed_update_delta)
+        {
+            fixed_update_accumulator -= fixed_update_delta;
+            if (!state_stack.empty())
+            state_stack.back()->onFixedUpdate();
+        }
     }
     if (!state_stack.empty())
         state_stack.back()->onUpdate(time_delta);
 
     // Process frontend events (keypress/mouse/etc...)
     if (!state_stack.empty())
-        frontend->processEvents(*state_stack.back());
+        frontend->processEvents(*state_stack.back(), !config.continuous_loop);
 
     // Render all states from bottom to top, so topmost state is rendered last.
     for(auto& state : state_stack) {
