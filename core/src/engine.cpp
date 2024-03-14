@@ -27,6 +27,12 @@ void Engine::run()
     config.continuous_loop = true;
     emscripten_set_main_loop_arg(Engine::staticUpdate, this, 0, 1);
 #else
+    //Make sure we render at least once before we block in non-continuous loop mode
+    for(auto& state : state_stack) {
+        state->onRender(*frontend);
+    }
+    frontend->present();
+
     while(frontend->isOpen() && !state_stack.empty()) {
         update();
     }
