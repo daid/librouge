@@ -49,11 +49,13 @@ Terminal::~Terminal()
     fflush(stdout);
 }
 
-void Terminal::processEvents(GameState& gamestate) {
-    struct pollfd p { 0, POLLIN, 0 };
-    poll(&p, 1, 16);
-    if (!(p.revents & POLLIN))
-        return;
+void Terminal::processEvents(GameState& gamestate, bool blocking) {
+    if (!blocking) {
+        struct pollfd p { 0, POLLIN, 0 };
+        poll(&p, 1, 16);
+        if (!(p.revents & POLLIN))
+            return;
+    }
 
     std::deque<char> input_queue;
     char buffer[32];
